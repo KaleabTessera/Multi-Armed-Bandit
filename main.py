@@ -1,6 +1,7 @@
 
 from algorithms.Egreedy import Egreedy
 from algorithms.Greedy import Greedy
+from algorithms.UpperConfidenceBound import UpperConfidenceBound
 from classes.MultiArmBandit import MultiArmBandit
 from helpers.ExperimentRunner import ExperimentRunner
 import argparse
@@ -25,9 +26,13 @@ def main():
     q1 = 5
     greedy_optimistic_ini = Greedy(Q1=q1, mab=mab)
     experiment_runner.runExperiments(alg=greedy_optimistic_ini,
-                                     max_steps=1000, num_runs=100, alg_name=f'Greed with Q1={q1}')
+                                     max_steps=1000, num_runs=100, alg_name=f'Greedy with Q1={q1}')
+
+    c = 2
+    upper_bound_conf = UpperConfidenceBound(c=q1, mab=mab)
+    experiment_runner.runExperiments(alg=upper_bound_conf,
+                                     max_steps=1000, num_runs=100, alg_name=f'UCB with c={c}')
     experiment_runner.plot()
-    plt.show()
 
 
 if __name__ == '__main__':

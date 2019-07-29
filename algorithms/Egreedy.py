@@ -18,7 +18,8 @@ class Egreedy:
             arm_to_pull = self.select_action(self.eps)
             self.total_reward += self.mab.pull_arm(
                 arm_to_pull)
-            self.reward_t[num_steps] = self.total_reward
+            self.reward_t[num_steps] = self.mab.pull_arm(
+                arm_to_pull)
             if(debug):
                 print(f'Current reward : {self.total_reward}')
             self.N_a[arm_to_pull] += 1
@@ -33,7 +34,7 @@ class Egreedy:
         # Exploit
         if(s > eps):
             # Arm with highest reward
-            arm_to_pull = np.argmax(self.mab.r_t)
+            arm_to_pull = np.argmax(self.Q_a)
         # Explore
         else:
             # Random arm choosen
