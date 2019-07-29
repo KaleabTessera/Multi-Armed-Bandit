@@ -3,6 +3,7 @@ from algorithms.Egreedy import Egreedy
 from classes.MultiArmBandit import MultiArmBandit
 from helpers.ExperimentRunner import ExperimentRunner
 import argparse
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -15,9 +16,13 @@ def main():
     mab = MultiArmBandit(args.num_arms)
 
     print("Eps Greedy")
-    eps_greedy = Egreedy(eps=0.1, mab=mab)
+    eps = 0.1
+    eps_greedy = Egreedy(eps=eps, mab=mab)
     experiment_e_greedy = ExperimentRunner(eps_greedy)
-    experiment_e_greedy.runExperiments(max_steps=1000, num_runs=100)
+    experiment_e_greedy.runExperiments(
+        max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
+
+    plt.show()
 
 
 if __name__ == '__main__':

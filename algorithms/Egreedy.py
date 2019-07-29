@@ -10,25 +10,17 @@ class Egreedy:
         self.total_reward = 0
         self.eps = eps
 
-    def run(self, max_steps):
+    def run(self, max_steps, debug=False):
         # Store reward at each t
         self.reward_t = np.zeros(max_steps)
         num_steps = 0
         while(num_steps < max_steps):
             arm_to_pull = self.select_action(self.eps)
-            # if(num_steps > 0):
-            #     self.reward_t[num_steps] = self.mab.pull_arm(
-            #         arm_to_pull) + self.reward_t[num_steps-1]
-            # # Initial reward_t
-            # else:
-            #     self.reward_t[num_steps] = self.mab.pull_arm(
-            #         arm_to_pull)
-            # self.total_reward[num_steps] += self.mab.pull_arm(arm_to_pull)
-            # self.total_reward += self.reward_t[num_steps]
             self.total_reward += self.mab.pull_arm(
                 arm_to_pull)
             self.reward_t[num_steps] = self.total_reward
-            print(f'Current reward : {self.total_reward}')
+            if(debug):
+                print(f'Current reward : {self.total_reward}')
             self.N_a[arm_to_pull] += 1
             self.Q_a[arm_to_pull] = self.Q_a[arm_to_pull] + \
                 (1 / self.N_a[arm_to_pull]) * \
