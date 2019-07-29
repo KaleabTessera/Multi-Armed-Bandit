@@ -1,5 +1,6 @@
 
 from algorithms.Egreedy import Egreedy
+from algorithms.Greedy import Greedy
 from classes.MultiArmBandit import MultiArmBandit
 from helpers.ExperimentRunner import ExperimentRunner
 import argparse
@@ -15,13 +16,17 @@ def main():
     args = parser.parse_args()
     mab = MultiArmBandit(args.num_arms)
 
-    print("Eps Greedy")
     eps = 0.1
     eps_greedy = Egreedy(eps=eps, mab=mab)
-    experiment_e_greedy = ExperimentRunner(eps_greedy)
-    experiment_e_greedy.runExperiments(
-        max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
+    experiment_runner = ExperimentRunner()
+    experiment_runner.runExperiments(alg=eps_greedy,
+                                     max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
 
+    q1 = 5
+    greedy_optimistic_ini = Greedy(Q1=q1, mab=mab)
+    experiment_runner.runExperiments(alg=greedy_optimistic_ini,
+                                     max_steps=1000, num_runs=100, alg_name=f'Greed with Q1={q1}')
+    experiment_runner.plot()
     plt.show()
 
 
