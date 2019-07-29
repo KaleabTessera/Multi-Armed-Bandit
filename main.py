@@ -1,23 +1,23 @@
 
 from algorithms.Egreedy import Egreedy
-from objects.MultiArmBandit import MultiArmBandit
+from classes.MultiArmBandit import MultiArmBandit
+from helpers.ExperimentRunner import ExperimentRunner
 import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+    parser = argparse.ArgumentParser(description='Multi-Armed Bandit')
     parser.add_argument('--num-arms', type=int, default=10, metavar='N',
                         help='Number of arms of MAB.')
+    parser.add_argument('--num-runs', type=int, default=10, metavar='N',
+                        help='Number of runs to repeat and average for each algorithm.')
     args = parser.parse_args()
     mab = MultiArmBandit(args.num_arms)
-    # mab.print_actions()
-    # index_arm = int(
-    #     input(f'Please choose an arm to pull (0-{args.num_arms}):'))
-    # mab.pull_arm(index_arm)
 
     print("Eps Greedy")
-    eps_greedy = Egreedy(mab)
-    eps_greedy.run(0.2)
+    eps_greedy = Egreedy(eps=0.1, mab=mab)
+    experiment_e_greedy = ExperimentRunner(eps_greedy)
+    experiment_e_greedy.runExperiments(max_steps=1000, num_runs=100)
 
 
 if __name__ == '__main__':
