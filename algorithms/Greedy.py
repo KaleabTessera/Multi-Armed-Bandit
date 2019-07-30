@@ -18,7 +18,6 @@ class Greedy:
             arm_to_pull = self.select_action()
             current_reward = self.mab.pull_arm(
                 arm_to_pull)
-            print(f'{arm_to_pull}-{current_reward}')
             self.total_reward += current_reward
             self.reward_t[num_steps] = current_reward
             if(debug):

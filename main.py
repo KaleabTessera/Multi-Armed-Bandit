@@ -21,21 +21,21 @@ def main():
     mab = MultiArmBandit(args.num_arms)
     experiment_runner = ExperimentRunner()
 
-    # eps = 0.1
-    # eps_greedy = Egreedy(eps=eps, mab=mab)
-    # experiment_runner.runExperiments(alg=eps_greedy,
-    #                                  max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
+    eps = 0.1
+    eps_greedy = Egreedy(eps=eps, mab=mab)
+    experiment_runner.runExperiments(alg=eps_greedy,
+                                     max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
 
     # mab = MultiArmBandit(args.num_arms)
     q1 = 5
     greedy_optimistic_ini = Greedy(Q1=q1, mab=mab)
     experiment_runner.runExperiments(alg=greedy_optimistic_ini,
-                                     max_steps=100, num_runs=100, alg_name=f'Greedy with Q1={q1}')
+                                     max_steps=1000, num_runs=100, alg_name=f'Greedy with Q1={q1}')
 
-    # c = 2
-    # upper_bound_conf = UpperConfidenceBound(c=q1, mab=mab)
-    # experiment_runner.runExperiments(alg=upper_bound_conf,
-    #                                  max_steps=1000, num_runs=100, alg_name=f'UCB with c={c}')
+    c = 2
+    upper_bound_conf = UpperConfidenceBound(c=q1, mab=mab)
+    experiment_runner.runExperiments(alg=upper_bound_conf,
+                                     max_steps=1000, num_runs=100, alg_name=f'UCB with c={c}')
     experiment_runner.plot()
 
 
