@@ -10,7 +10,7 @@ import numpy as np
 
 
 def main():
-    np.random.seed(42)
+    # np.random.seed(42)
 
     parser = argparse.ArgumentParser(description='Multi-Armed Bandit')
     parser.add_argument('--num-arms', type=int, default=10, metavar='N',
