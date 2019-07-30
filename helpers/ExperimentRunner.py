@@ -30,7 +30,7 @@ class ExperimentRunner:
         ax.set_xlabel(f'Steps')
         plt.show()
 
-    def runExperiments_part2(self, algs, max_steps=1000, alg_name=""):
+    def runExperiments_part2(self, algs, exp_range, max_steps=1000,  alg_name=""):
         self.max_steps = max_steps
         results_list = []
         all_mean_value_per_alg = []
@@ -39,16 +39,25 @@ class ExperimentRunner:
             mean_per_alg = results_t.mean(axis=0)
             all_mean_value_per_alg.append(mean_per_alg)
         all_mean_value_per_alg_df = pd.DataFrame(all_mean_value_per_alg)
-        all_mean_value_per_alg_df['alg_name'] = alg_name
-        self.all_results_part2 = pd.concat(
-            [self.all_results_part2, pd.DataFrame(all_mean_value_per_alg)], axis=1)
+        all_mean_value_per_alg_df.reset_index(
+            inplace=True, drop=True)
+        all_mean_value_per_alg_df = all_mean_value_per_alg_df.T
+        all_mean_value_per_alg_df.columns = [exp_range]
+        return all_mean_value_per_alg_df
 
-        # self.all_results_part2.plot()
-        # plt.show()
-
-    def plot_part2(self):
-        ax = self.all_results_part2.plot(
-            title="Summary comparison of Algorithms")
-        ax.set_ylabel(f'Average reward over {self.max_steps} runs')
-        ax.set_xlabel(f'Hyparameters (E-greedy : e , Greedy : Q0/Q1, UCB:c)')
+    def plot_part2(self, df1, df2, df3):
+        plt.plot(list(
+            df1.columns.get_level_values(0)), df1.values.flatten(), label="e-greedy")
+        plt.plot(list(
+            df2.columns.get_level_values(0)), df2.values.flatten(), label="greedy")
+        plt.plot(list(
+            df3.columns.get_level_values(0)), df3.values.flatten(), label="ucb")
+        ax = plt.gca()
+        ax.set_title(
+            'Summary of Results for Multi-Armed Bandit with different algorithms')
+        ax.set_ylabel(f'Average reward over {self.max_steps} steps')
+        ax.set_xlabel(
+            f'Different Hyperparameters - (Eps-greedy : eps, Greedy : Q0, ucb: c) ')
+        plt.legend()
+        ax.set_xscale('log')
         plt.show()
