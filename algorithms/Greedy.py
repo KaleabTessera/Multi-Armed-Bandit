@@ -13,19 +13,20 @@ class Greedy:
     def run(self, max_steps, debug=False):
         # Store reward at each t
         self.reward_t = np.zeros(max_steps)
-        num_steps = 0
+        num_steps = 1
         while(num_steps < max_steps):
             arm_to_pull = self.select_action()
-            self.total_reward += self.mab.pull_arm(
+            current_reward = self.mab.pull_arm(
                 arm_to_pull)
-            self.reward_t[num_steps] = self.mab.pull_arm(
-                arm_to_pull)
+            print(f'{arm_to_pull}-{current_reward}')
+            self.total_reward += current_reward
+            self.reward_t[num_steps] = current_reward
             if(debug):
                 print(f'Current reward : {self.total_reward}')
             self.N_a[arm_to_pull] += 1
             self.Q_a[arm_to_pull] = self.Q_a[arm_to_pull] + \
                 (1 / self.N_a[arm_to_pull]) * \
-                (self.total_reward - self.Q_a[arm_to_pull])
+                (current_reward - self.Q_a[arm_to_pull])
             num_steps += 1
         return self.reward_t, self.total_reward
 

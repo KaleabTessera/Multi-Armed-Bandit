@@ -30,7 +30,7 @@ class Egreedy:
         return self.reward_t, self.total_reward
 
     def select_action(self, eps):
-        s = np.random.uniform()
+        s = np.random.uniform(0, 1)
         # Exploit
         if(s > eps):
             # Arm with highest reward
