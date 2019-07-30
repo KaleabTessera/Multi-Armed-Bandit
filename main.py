@@ -21,22 +21,45 @@ def main():
     mab = MultiArmBandit(args.num_arms)
     experiment_runner = ExperimentRunner()
 
-    eps = 0.1
-    eps_greedy = Egreedy(eps=eps, mab=mab)
-    experiment_runner.runExperiments(alg=eps_greedy,
-                                     max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
+    # # Part 1 - A plot of reward over time (averaged over 100 runs each) on the
+    # # same axes, for 𝜖-greedy with 𝜖 = 0.1, greedy with 𝑄1 = 5, and
+    # # UCB with 𝑐 = 2
+    # eps = 0.1
+    # eps_greedy = Egreedy(eps=eps, mab=mab)
+    # experiment_runner.runExperiments_part1(alg=eps_greedy,
+    #                                        max_steps=1000, num_runs=100, alg_name=f'e-greedy with e={eps}')
 
-    # mab = MultiArmBandit(args.num_arms)
-    q1 = 5
-    greedy_optimistic_ini = Greedy(Q1=q1, mab=mab)
-    experiment_runner.runExperiments(alg=greedy_optimistic_ini,
-                                     max_steps=1000, num_runs=100, alg_name=f'Greedy with Q1={q1}')
+    # q1 = 5
+    # greedy_optimistic_ini = Greedy(Q1=q1, mab=mab)
+    # experiment_runner.runExperiments_part1(alg=greedy_optimistic_ini,
+    #                                        max_steps=1000, num_runs=100, alg_name=f'Greedy with Q1={q1}')
 
-    c = 2
-    upper_bound_conf = UpperConfidenceBound(c=q1, mab=mab)
-    experiment_runner.runExperiments(alg=upper_bound_conf,
-                                     max_steps=1000, num_runs=100, alg_name=f'UCB with c={c}')
-    experiment_runner.plot()
+    # c = 2
+    # upper_bound_conf = UpperConfidenceBound(c=c, mab=mab)
+    # experiment_runner.runExperiments_part1(alg=upper_bound_conf,
+    #                                        max_steps=1000, num_runs=100, alg_name=f'UCB with c={c}')
+
+    # experiment_runner.plot_part1()
+    # Part 2 - A summary comparison plot of rewards over first 1000 steps for
+    # the three algorithms with different values of the hyperparameters
+
+    eps_greedy_range = [1/128, 1/64, 1/32, 1/16, 1/4, 1/2]
+    eps_greedy_algs = []
+    for eps in eps_greedy_range:
+        eps_greedy = Egreedy(eps=eps, mab=mab)
+        eps_greedy_algs.append(eps_greedy)
+    experiment_runner.runExperiments_part2(algs=eps_greedy_algs,
+                                           max_steps=1000, alg_name='e-greedy')
+
+    c_range = [1/16, 1/8, 1/4, 1/2, 1, 2, 4]
+    upper_bound_conf_algs = []
+    for c in c_range:
+        upper_bound_conf = UpperConfidenceBound(c=c, mab=mab)
+        upper_bound_conf_algs.append(upper_bound_conf)
+    experiment_runner.runExperiments_part2(algs=upper_bound_conf_algs,
+                                           max_steps=1000, alg_name='ucb')
+
+    experiment_runner.plot_part2()
 
 
 if __name__ == '__main__':
